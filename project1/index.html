@@ -1,0 +1,463 @@
+<html>
+<head>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+
+  <script>
+    var gpa = {
+      "A": 4,
+      "A-": 3.75,
+      "B+": 3.25,
+      "B": 3,
+      "B-": 2.75,
+      "C+": 2.25,
+      "C": 2,
+      "C-": 1.75,
+      "D": 1,
+      "F": 0,
+      "W": 0
+    };
+var subjects = [];
+var semesters = [];
+var major;
+
+function chooseMajor() {
+  major = document.getElementById("major").value;
+}
+
+function createSemester() {
+  var semester = document.getElementById("semester").value;
+  semesters.push(semester);
+  updateSemesterList();
+}
+
+function addSubject() {
+  var name = document.getElementById("subjectName").value;
+  var code = document.getElementById("subjectCode").value;
+  var groupName = document.getElementById("groupName").value;
+  var grade = document.getElementById("subjectGrade").value;
+  var semester = document.getElementById("selectedSemester").value;
+
+  if (name == "" || code == "" || groupName == "" || grade == "" || semester == "") {
+    alert("Please fill in all the required fields.");
+    return;
+  }
+
+  var subject = {
+    "name": name,
+    "code": code,
+    "groupName": groupName,
+    "grade": grade,
+    "semester": semester
+  };
+  subjects.push(subject);
+  updateSubjectList();
+  document.getElementById("subjectName").value = "";
+  document.getElementById("subjectCode").value = "";
+  document.getElementById("groupName").value = "";
+  document.getElementById("subjectGrade").value = "";
+}
+
+function updateSemesterList() {
+  var select = document.getElementById("selectedSemester");
+  select.innerHTML = "";
+  for (var i = 0; i < semesters.length; i++) {
+    var option = document.createElement("option");
+    option.value = semesters[i];
+    option.text = semesters[i];
+    select.appendChild(option);
+  }
+}
+
+function updateSubjectList() {
+  var table = document.getElementById("subjects");
+  table.innerHTML = "";
+  for (var i = 0; i < subjects.length; i++) {
+    var row = table.insertRow();
+    var nameCell = row.insertCell(0);
+    var codeCell = row.insertCell(1);
+    var groupNameCell = row.insertCell(2);
+    var gradeCell = row.insertCell(3);
+    var semesterCell = row.insertCell(4);
+    nameCell.innerHTML = subjects[i].name;
+    codeCell.innerHTML = subjects[i].code;
+    groupNameCell.innerHTML = subjects[i].groupName;
+    gradeCell.innerHTML = subjects[i].grade;
+    semesterCell.innerHTML = subjects[i].semester;
+}
+}
+function calculateSemesterGPA() {
+  var semester = document.getElementById("selectedSemester").value;
+  var totalGrade = 0;
+  var count = 0;
+  for (var i = 0; i < subjects.length; i++) {
+    if (subjects[i].semester == semester) {
+      totalGrade += gpa[subjects[i].grade];
+      count++;
+    }
+  }
+  var semesterGPA = totalGrade / count;
+  document.getElementById("semesterGPA").innerHTML = "Semester GPA: " + semesterGPA.toFixed(2);
+}
+
+function calculateOverallGPA() {
+  var totalGrade = 0;
+  var count = 0;
+  for (var i = 0; i < subjects.length; i++) {
+    totalGrade += gpa[subjects[i].grade];
+    count++;
+  }
+  var overallGPA = totalGrade / count;
+  document.getElementById("overallGPA").innerHTML = "Overall GPA: " + overallGPA.toFixed(2);
+}
+</script>
+
+</head>
+<body>
+  <h2>GPA Calculator</h2>
+  <p>Choose Major:
+    <select id="major" onchange="chooseMajor()">
+      <option value=""></option>
+      <option value="CS">Computer Science</option>
+      <option value="IT">Information Technology</option>
+    </select>
+  </p>
+  <p>Create Semester:
+    <input type="text" id="semester">
+    <button onclick="createSemester()">Add</button>
+  </p>
+  <p>Selected Semester:
+    <select id="selectedSemester">
+      <option value=""></option>
+    </select>
+  </p>
+  <p>Add Subject:
+    <input type="text" id="subjectName" placeholder="Subject Name">
+    <input type="text" id="subjectCode" placeholder="Subject Code">
+    <input type="text" id="groupName" placeholder="Group Name">
+    <input type="text" id="subjectGrade" placeholder="Subject Grade (A, B+, C-, etc)">
+    <button onclick="addSubject()">Add</button>
+  </p>
+  <table id="subjects">
+    <tr>
+      <th>Subject Name</th>
+      <th>Subject Code</th>
+      <th>Group Name</th>
+      <th>Subject Grade</th>
+      <th>Semester</th>
+    </tr>
+  </table>
+  <br>
+  <button onclick="calculateSemesterGPA()">Calculate Semester GPA</button>
+  <p id="semesterGPA"></p>
+  <br>
+  <button onclick="calculateOverallGPA()">Calculate Overall GPA</button>
+
+  <p id="overallGPA"></p>
+
+  <h1>EXAMPLE CLASS</h1>
+
+  <table>
+    <thead>
+      <tr>
+        <th colspan="2">Computer Science</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="2">Language Courses</td>
+      </tr>
+      <tr>
+        <td>BG 1001</td>
+        <td>English I</td>
+      </tr>
+      <tr>
+        <td>BG 1002</td>
+        <td>English II</td>
+      </tr>
+      <tr>
+        <td>BG 2000</td>
+        <td>English III</td>
+      </tr>
+      <tr>
+        <td>BG 2001</td>
+        <td>English IV</td>
+      </tr>
+      <tr>
+        <td colspan="2">Humanities Courses</td>
+      </tr>
+      <tr>
+        <td>LAW 1201</td>
+        <td>Business Laws for Entrepreneurs</td>
+      </tr>
+      <tr>
+        <td colspan="2">Social Science Courses</td>
+      </tr>
+      <tr>
+        <td>GE 2202</td>
+        <td>Ethics</td>
+      </tr>
+      <tr>
+        <td>BBA 1001</td>
+        <td>Business Exploration</td>
+      </tr>
+      <tr>
+        <td colspan="2">Science and Mathematics Courses</td>
+      </tr>
+      <tr>
+        <td>BAC 1602</td>
+        <td>Fundamentals of Financial Accounting I</td>
+      </tr>
+      <tr>
+        <td>CSX 1001</td>
+        <td>Basic Mathematics and Statistics</td>
+      </tr>
+      <tr>
+        <td colspan="2">General Education Courses</td>
+      </tr>
+      <tr>
+        <td>GE 1103</td>
+        <td>Historical Perspectives on Thailand</td>
+      </tr>
+      <tr>
+        <td>GE 1102</td>
+        <td>Introduction to Philosophy</td>
+      </tr>
+      <!-- And so on for all the remaining subjects -->
+    </tbody>
+  </table>
+
+  <table id="curriculumTable">
+    <thead>
+      <tr>
+        <th>Group Name</th>
+        <th>Subject Code</th>
+        <th>Subject Name</th>
+      </tr>
+    </thead>
+    <tbody id="curriculumBody">
+    </tbody>
+  </table>
+  
+<script>
+    function generateTable(data) {
+      var tbody = document.getElementById("curriculumBody");
+      data.subjects.forEach(function(group) {
+        group.subjects.forEach(function(subject) {
+          var tr = document.createElement("tr");
+          var groupName = document.createElement("td");
+          groupName.innerHTML = group.groupName;
+          var subjectCode = document.createElement("td");
+          subjectCode.innerHTML = subject.code;
+          var subjectName = document.createElement("td");
+          subjectName.innerHTML = subject.name;
+          tr.appendChild(groupName);
+          tr.appendChild(subjectCode);
+          tr.appendChild(subjectName);
+          tbody.appendChild(tr);
+        });
+      });
+    }
+var data =  {
+    
+  "curriculum": {
+    "name": "Computer Science",
+    "subjects": [
+      {
+        "groupName": "Language Courses",
+        "subjects": [
+          {
+            "code": "BG 1001",
+            "name": "English I"
+          },
+          {
+            "code": "BG 1002",
+            "name": "English II"
+          },
+          {
+            "code": "BG 2000",
+            "name": "English III"
+          },
+          {
+            "code": "BG 2001",
+            "name": "English IV"
+          }
+        ]
+      },
+      {
+        "groupName": "Humanities Courses",
+        "subjects": [
+          {
+            "code": "LAW 1201",
+            "name": "Business Laws for Entrepreneurs"
+          }
+        ]
+      },
+      {
+        "groupName": "Social Science Courses",
+        "subjects": [
+          {
+            "code": "GE 2202",
+            "name": "Ethics"
+          },
+          {
+            "code": "BBA 1001",
+            "name": "Business Exploration"
+          }
+        ]
+      },
+      {
+        "groupName": "Science and Mathemetics Courses",
+        "subjects": [
+          {
+            "code": "BAC 1602",
+            "name": "Fundamentals of Financial Accounting I"
+          },
+          {
+            "code": "CSX 1001",
+            "name": "Basic Mathematics and Statistics"
+          }
+        ]
+      },
+      {
+        "groupName": "General Education Courses",
+        "subjects": [
+          {
+            "code": "GE 1103",
+            "name": "Historical Perspectives on Thailand"
+          },
+          {
+            "code": "GE 1102",
+            "name": "Introduction to Philosophy"
+          },
+          {
+            "code": "GE 2102",
+            "name": "Human Heritage and Globalization"
+          },
+          {
+            "code": "GE 2103",
+            "name": "Art of Reasoning"
+          },
+          {
+            "code": "GE 2104",
+            "name": "Thai Buddhism"
+          },
+          {
+            "code": "GE 2105",
+            "name": "Introduction to World Religion"
+          },
+          {
+            "code": "GE 2106",
+            "name": "Logical Thinking and Application"
+          },
+          {
+            "code": "GE 2107",
+            "name": "Applied Philosophy in Social Sciences and Humanities"
+          },
+          {
+            "code": "BBA 2001",
+            "name": "Human Behavior"
+          },
+          {
+            "code": "GE 1207",
+            "name": "Fundamental Psychology"
+          },
+          {
+            "code": "GE 1203",
+            "name": "Society, Politics and Economics"
+          },
+          {
+            "code": "GE 1205",
+            "name": "ASEAN Ways"
+          },
+          {
+            "code": "GE 1206",
+            "name": "Philosophy of Sufficiency Economy"
+          },
+          {
+            "code": "GE 2203",
+            "name": "Art of Living"
+          },
+          {
+            "code": "GE 2205",
+            "name": "Communication and Multicultural society"
+          },
+          {
+            "code": "GE 2206",
+            "name": "Personality Development"
+          },
+          {
+            "code": "GE 2207",
+            "name": "Sport, Health and Wellness Development"
+          },
+          {
+            "code": "GE 2208",
+            "name": "Thai Politics and Government"
+          },
+          {
+            "code": "BEC 2200",
+            "name": "Introduction to Economics"
+          },
+          {
+            "code": "GE 1302",
+            "name": "Ecology and Sustainability"
+          },
+          {
+            "code": "GE 2301",
+            "name": "Lifestyles in Dynamic World"
+          },
+          {
+            "code": "GE 2302",
+            "name": "Climate Change and Human Life"
+          },
+          {
+            "code": "GE 2303",
+            "name": "Building Brilliant Brain"
+          },
+          {
+            "code": "MA 1200",
+            "name": "Mathematics for Business"
+          },
+          {
+            "code": "GE 1403",
+            "name": "Communication in Thai"
+          },
+          {
+            "code": "GE 1405",
+            "name": "Thai Language and Culture"
+          },
+          {
+            "code": "GE 1406",
+            "name": "Burmese Language"
+          },
+          {
+            "code": "GE 1407",
+            "name": "Russian Language"
+          },
+          {
+            "code": "GE 3401",
+            "name": "Public Speaking in Thai"
+          }
+        ]
+      }
+    ]
+  }
+};
+generateTable(data.curriculum);
+</script>
+  
+</body>
+</html>
+
