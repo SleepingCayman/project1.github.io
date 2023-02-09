@@ -20,3 +20,5 @@
 <p>
 6. Press Calculate Overall GPA to calculate the Overall GPA.
 </p>
+
+<h3>Example<h3>
