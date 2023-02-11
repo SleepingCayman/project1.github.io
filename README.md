@@ -4,6 +4,8 @@
 <a href="https://sleepingcayman.github.io/project1.github.io/project1/">Grade Tracker</a> Link to open web.
 
 <h1>explain<h1>
+<p>This is a Grade Tracker program. It can calculate the GPA of all courses in a semester, and also calculate the weight GPA of all semesters.</P>
+
 <h2>Interface<h2>
 <img src="https://github.com/SleepingCayman/project1.github.io/blob/main/project1/Interface.png" >
 <h2>Usage method</h2>
